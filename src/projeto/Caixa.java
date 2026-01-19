@@ -24,12 +24,35 @@ public class Caixa {
 			switch (opcao) {
 			
 			case 1:
-				System.out.println("Digite o valor do profuto: ");
-				double valor = entrada.nextDouble();
-				total += valor;
-				System.out.println("Produto adicionado!");
-				break;
-			
+				System.out.println("\n === PRODUTOS ===");
+				System.out.println("1 - Refrigerante (R$ 5.00)");
+                System.out.println("2 - Salgado (R$ 7.50)");
+                System.out.println("3 - Chocolate (R$ 4.00)");
+                System.out.print("Escolha o produto: ");
+
+				int produto = entrada.nextInt();
+
+				switch (produto) {
+					case 1:
+						total += 5.00;
+						System.out.println("Refrigerante adicionado!");
+						break;
+					
+					 case 2:
+                            total += 7.50;
+                            System.out.println("Salgado adicionado!");
+                            break;
+
+                        case 3:
+                            total += 4.00;
+                            System.out.println("Chocolate adicionado!");
+                            break;
+
+                        default:
+                            System.out.println("Produto inválido!");
+                    }
+                    break;
+				
 			case 2:
 				System.out.println("Total da compra: R$ " + total);
 				break;
