@@ -4,117 +4,72 @@ import java.util.Scanner;
 
 public class Caixa {
 
-    public static void main(String[] args) {
+	static void mostrarMenu() {
+		System.out.println("\n=== CAIXA ===");
+		System.out.println("1 - Adicionar produto");
+		System.out.println("2 - Ver total");
+		System.out.println("3 - Pagar");
+		System.out.println("4 - Sair");
+		System.out.print("Escolha uma opção: ");
+	}
 
-        Scanner entrada = new Scanner(System.in);
-        double total = 0;
+	public static void main(String[] args) {
 
-        while (true) {
-            System.out.println("\n=== CAIXA ===");
-            System.out.println("1 - Adicionar produto");
-            System.out.println("2 - Ver total");
-            System.out.println("3 - Pagar");
-            System.out.println("4 - Sair");
-            System.out.print("Escolha uma opção: ");
+		Scanner entrada = new Scanner(System.in);
+		Carrinho carrinho = new Carrinho();
 
-            int opcao = entrada.nextInt();
+		while (true) {
 
-            switch (opcao) {
+			mostrarMenu();
+			int opcao = entrada.nextInt();
 
-            // ================= PRODUTOS =================
-            case 1:
-                System.out.println("\n=== PRODUTOS ===");
-                System.out.println("1 - Refrigerante (R$ 5.00)");
-                System.out.println("2 - Salgado (R$ 7.50)");
-                System.out.println("3 - Chocolate (R$ 4.00)");
-                System.out.print("Escolha o produto: ");
+			switch (opcao) {
 
-                int produto = entrada.nextInt();
-                double preco = 0;
-                String nomeProduto = "";
+			// ===== ADICIONAR PRODUTO =====
+			case 1:
+				Catalogo.mostrarProdutos();
+				System.out.print("Escolha o produto: ");
+				int escolha = entrada.nextInt();
 
-                switch (produto) {
-                    case 1:
-                        preco = 5.00;
-                        nomeProduto = "Refrigerante";
-                        break;
-                    case 2:
-                        preco = 7.50;
-                        nomeProduto = "Salgado";
-                        break;
-                    case 3:
-                        preco = 4.00;
-                        nomeProduto = "Chocolate";
-                        break;
-                    default:
-                        System.out.println("Produto inválido!");
-                }
+				Produto produto = Catalogo.escolherProduto(escolha);
 
-                if (preco > 0) {
-                    total += preco;
-                    System.out.println(nomeProduto + " adicionado!");
-                }
-                break;
+				if (produto != null) {
+					carrinho.adicionarProduto(produto);
+					System.out.println(produto.nome + " adicionado!");
+				} else {
+					System.out.println("Produto inválido!");
+				}
+				break;
 
-            // ================= VER TOTAL =================
-            case 2:
-                System.out.println("Total da compra: R$ " + total);
-                break;
+			// ===== VER TOTAL =====
+			case 2:
+				System.out.println("Total da compra: R$ " + carrinho.calcularTotal());
+				break;
 
-            // ================= PAGAMENTO =================
-            case 3:
-                if (total == 0) {
-                    System.out.println("Carrinho vazio!");
-                    break;
-                }
+			// ===== PAGAR =====
+			case 3:
+			    if (carrinho.estaVazio()) {
+			        System.out.println("Carrinho vazio!");
+			        break;
+			    }
 
-                System.out.println("\nTotal a pagar: R$ " + total);
+			    double total = carrinho.calcularTotal();
 
-                System.out.println("\n=== FORMAS DE PAGAMENTO ===");
-                System.out.println("1 - Débito");
-                System.out.println("2 - Pix");
-                System.out.println("3 - Crédito");
-                System.out.print("Escolha a forma de pagamento: ");
+			    Pagamento pagamento = new Pagamento();
+			    pagamento.pagar(total);
 
-                int formaPagamento = entrada.nextInt();
+			    carrinho.limpar();
+			    break;
 
-                switch (formaPagamento) {
-                    case 1:
-                        System.out.println("Pagamento no Débito selecionado.");
-                        break;
-                    case 2:
-                        System.out.println("Pagamento via Pix selecionado.");
-                        break;
-                    case 3:
-                        System.out.println("Pagamento no Crédito selecionado.");
-                        break;
-                    default:
-                        System.out.println("Forma de pagamento inválida!");
-                        break;
-                }
+			// ===== SAIR =====
+			case 4:
+				System.out.println("Caixa encerrado. Obrigado!");
+				entrada.close();
+				return;
 
-                System.out.print("Digite o valor pago: ");
-                double pago = entrada.nextDouble();
-
-                if (pago >= total) {
-                    double troco = pago - total;
-                    System.out.println("Pagamento aprovado!");
-                    System.out.println("Troco: R$ " + troco);
-                    total = 0;
-                } else {
-                    System.out.println("Valor insuficiente!");
-                }
-                break;
-
-            // ================= SAIR =================
-            case 4:
-                System.out.println("Caixa encerrado. Obrigado!");
-                entrada.close();
-                return;
-
-            default:
-                System.out.println("Opção inválida!");
-            }
-        }
-    }
+			default:
+				System.out.println("Opção inválida!");
+			}
+		}
+	}
 }
