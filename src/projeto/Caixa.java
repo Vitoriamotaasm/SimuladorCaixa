@@ -17,6 +17,7 @@ public class Caixa {
 
 		Scanner entrada = new Scanner(System.in);
 		Carrinho carrinho = new Carrinho();
+		HistoricoCompras historico = new HistoricoCompras();
 
 		while (true) {
 
@@ -54,12 +55,16 @@ public class Caixa {
 			    }
 
 			    double total = carrinho.calcularTotal();
-
 			    Pagamento pagamento = new Pagamento();
-			    pagamento.pagar(total);
 
-			    carrinho.limpar();
+			    boolean pago = pagamento.pagar(total);
+
+			    if (pago) {
+			        System.out.println("Venda finalizada com sucesso!");
+			        carrinho.limpar();
+			    }
 			    break;
+
 
 			// ===== SAIR =====
 			case 4:

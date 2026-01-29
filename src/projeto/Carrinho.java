@@ -1,8 +1,11 @@
 package projeto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Carrinho {
 
-	Produto[] itens = new Produto[10]; // limite simples
+	Produto[] itens = new Produto[10];
 	int quantidade = 0;
 
 	void adicionarProduto(Produto produto) {
@@ -24,5 +27,15 @@ public class Carrinho {
 
 	boolean estaVazio() {
 		return quantidade == 0;
+	}
+
+	List<Produto> getProdutos() {
+		List<Produto> lista = new ArrayList<>();
+
+		for (int i = 0; i < quantidade; i++) {
+			lista.add(itens[i]);
+		}
+
+		return lista;
 	}
 }

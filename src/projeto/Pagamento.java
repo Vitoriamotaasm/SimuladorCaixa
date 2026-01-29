@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class Pagamento {
 
-    public void pagar(double total) {
+    public boolean pagar(double total) {
         Scanner entrada = new Scanner(System.in);
 
         System.out.println("\n=== PAGAMENTO ===");
@@ -17,27 +17,29 @@ public class Pagamento {
 
         switch (opcao) {
             case 1:
-                pagarDinheiro(total, entrada);
-                break;
+                return pagarDinheiro(total, entrada);
             case 2:
                 System.out.println("Pagamento no cartão aprovado!");
-                break;
+                return true;
             case 3:
                 System.out.println("Pagamento via Pix realizado!");
-                break;
+                return true;
             default:
                 System.out.println("Forma de pagamento inválida!");
+                return false;
         }
     }
 
-    private void pagarDinheiro(double total, Scanner entrada) {
+    private boolean pagarDinheiro(double total, Scanner entrada) {
         System.out.print("Digite o valor pago: ");
         double pago = entrada.nextDouble();
 
         if (pago >= total) {
             System.out.println("Troco: R$ " + (pago - total));
+            return true;
         } else {
             System.out.println("Valor insuficiente!");
+            return false;
         }
     }
 }
