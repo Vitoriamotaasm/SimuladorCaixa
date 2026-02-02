@@ -4,12 +4,15 @@ import java.util.Scanner;
 
 public class Caixa {
 
+	static HistoricoCompras historico = new HistoricoCompras();
+
 	static void mostrarMenu() {
 		System.out.println("\n=== CAIXA ===");
 		System.out.println("1 - Adicionar produto");
 		System.out.println("2 - Ver total");
 		System.out.println("3 - Pagar");
-		System.out.println("4 - Sair");
+		System.out.println("4 - Ver histórico");
+		System.out.println("5 - Sair");
 		System.out.print("Escolha uma opção: ");
 	}
 
@@ -17,7 +20,6 @@ public class Caixa {
 
 		Scanner entrada = new Scanner(System.in);
 		Carrinho carrinho = new Carrinho();
-		HistoricoCompras historico = new HistoricoCompras();
 
 		while (true) {
 
@@ -49,25 +51,31 @@ public class Caixa {
 
 			// ===== PAGAR =====
 			case 3:
-			    if (carrinho.estaVazio()) {
-			        System.out.println("Carrinho vazio!");
-			        break;
-			    }
+				if (carrinho.estaVazio()) {
+					System.out.println("Carrinho vazio!");
+					break;
+				}
 
-			    double total = carrinho.calcularTotal();
-			    Pagamento pagamento = new Pagamento();
+				double total = carrinho.calcularTotal();
 
-			    boolean pago = pagamento.pagar(total);
+				Pagamento pagamento = new Pagamento();
+				pagamento.pagar(total);
 
-			    if (pago) {
-			        System.out.println("Venda finalizada com sucesso!");
-			        carrinho.limpar();
-			    }
-			    break;
+				Compra compra = new Compra(carrinho.getProdutos(), total);
+				
+				//salva no historico 
+				historico.adicionarCompra(compra);
 
+				carrinho.limpar();
+				break;
+
+			// ===== HISTÓRICO =====
+			case 4:
+				historico.mostrarHistorico();
+				break;
 
 			// ===== SAIR =====
-			case 4:
+			case 5:
 				System.out.println("Caixa encerrado. Obrigado!");
 				entrada.close();
 				return;
