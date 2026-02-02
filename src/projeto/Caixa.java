@@ -56,14 +56,16 @@ public class Caixa {
 					break;
 				}
 
+				//mostra os produtos antes de pagar
+				carrinho.mostrarProdutos();
+
 				double total = carrinho.calcularTotal();
+				System.out.println("Total a pagar: R$ " + total);
 
 				Pagamento pagamento = new Pagamento();
 				pagamento.pagar(total);
 
 				Compra compra = new Compra(carrinho.getProdutos(), total);
-				
-				//salva no historico 
 				historico.adicionarCompra(compra);
 
 				carrinho.limpar();

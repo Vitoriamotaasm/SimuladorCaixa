@@ -38,4 +38,14 @@ public class Carrinho {
 
 		return lista;
 	}
+	
+	void mostrarProdutos() {
+		System.out.println("\n=== ITENS NO CARRINHO ===");
+
+		for (int i = 0; i < quantidade; i++) {
+			System.out.println("- " + itens[i].nome +
+				" (R$ " + itens[i].preco + ")");
+		}
+	}
 }
+
