@@ -56,19 +56,26 @@ public class Caixa {
 					break;
 				}
 
-				//mostra os produtos antes de pagar
+				// Mostra produtos
 				carrinho.mostrarProdutos();
 
 				double total = carrinho.calcularTotal();
 				System.out.println("Total a pagar: R$ " + total);
 
 				Pagamento pagamento = new Pagamento();
-				pagamento.pagar(total);
 
-				Compra compra = new Compra(carrinho.getProdutos(), total);
-				historico.adicionarCompra(compra);
+				// chama o pagamento e espera confirmação
+				boolean pagamentoConfirmado = pagamento.pagar(total);
 
-				carrinho.limpar();
+				if (pagamentoConfirmado) {
+					Compra compra = new Compra(carrinho.getProdutos(), total);
+					historico.adicionarCompra(compra);
+					carrinho.limpar();
+					System.out.println("Compra finalizada com sucesso!");
+				} else {
+					System.out.println("Pagamento cancelado. Voltando ao menu...");
+				}
+
 				break;
 
 			// ===== HISTÓRICO =====

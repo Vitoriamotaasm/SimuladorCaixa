@@ -11,35 +11,51 @@ public class Pagamento {
         System.out.println("1 - Dinheiro");
         System.out.println("2 - Cartão");
         System.out.println("3 - Pix");
+        System.out.println("0 - Cancelar pagamento");
         System.out.print("Escolha a forma de pagamento: ");
 
         int opcao = entrada.nextInt();
 
+        if (opcao == 0) {
+            System.out.println("Pagamento cancelado. Voltando ao menu...");
+            return false;
+        }
+
+        System.out.print("Digite o valor pago: R$ ");
+        double pago = entrada.nextDouble();
+
+        if (pago < total) {
+            System.out.println("Valor insuficiente! Pagamento cancelado.");
+            return false;
+        }
+
+        System.out.print("Confirmar pagamento? (1 - Sim / 2 - Não): ");
+        int confirmar = entrada.nextInt();
+
+        if (confirmar != 1) {
+            System.out.println("Pagamento cancelado. Voltando ao menu...");
+            return false;
+        }
+
         switch (opcao) {
             case 1:
-                return pagarDinheiro(total, entrada);
+                System.out.println("Pagamento em dinheiro realizado!");
+                System.out.println("Troco: R$ " + (pago - total));
+                break;
+
             case 2:
                 System.out.println("Pagamento no cartão aprovado!");
-                return true;
+                break;
+
             case 3:
                 System.out.println("Pagamento via Pix realizado!");
-                return true;
+                break;
+
             default:
                 System.out.println("Forma de pagamento inválida!");
                 return false;
         }
-    }
 
-    private boolean pagarDinheiro(double total, Scanner entrada) {
-        System.out.print("Digite o valor pago: ");
-        double pago = entrada.nextDouble();
-
-        if (pago >= total) {
-            System.out.println("Troco: R$ " + (pago - total));
-            return true;
-        } else {
-            System.out.println("Valor insuficiente!");
-            return false;
-        }
+        return true;
     }
 }
