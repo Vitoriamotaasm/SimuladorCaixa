@@ -1,0 +1,7 @@
+Compra:
+- Refrigerante (R$ 5.0)
+- Chocolate (R$ 4.0)
+Forma de pagamento: Pix
+Total: R$ 9.0
+
+----------------------

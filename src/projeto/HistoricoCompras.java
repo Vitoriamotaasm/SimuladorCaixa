@@ -1,26 +1,38 @@
 package projeto;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class HistoricoCompras {
 
-	private List<Compra> compras = new ArrayList<>();
+    private List<Compra> compras = new ArrayList<>();
+    private static final String ARQUIVO = "historico_compras.txt";
 
-	void adicionarCompra(Compra compra) {
-		compras.add(compra);
-	}
+    public void adicionarCompra(Compra compra) {
+        compras.add(compra);
+        salvarNoArquivo(compra);
+    }
 
-	void mostrarHistorico() {
-		if (compras.isEmpty()) {
-			System.out.println("\nNenhuma compra realizada ainda.");
-			return;
-		}
+    private void salvarNoArquivo(Compra compra) {
+        try (FileWriter writer = new FileWriter(ARQUIVO, true)) {
+            writer.write(compra.formatarParaArquivo());
+            writer.write("\n----------------------\n");
+        } catch (IOException e) {
+            System.out.println("Erro ao salvar histórico!");
+        }
+    }
 
-		System.out.println("\n=== HISTÓRICO DE COMPRAS ===");
-		for (int i = 0; i < compras.size(); i++) {
-			System.out.println("\nCompra #" + (i + 1));
-			compras.get(i).mostrarResumo();
-		}
-	}
+    public void mostrarHistorico() {
+        if (compras.isEmpty()) {
+            System.out.println("Nenhuma compra realizada ainda.");
+            return;
+        }
+
+        for (Compra c : compras) {
+            c.mostrarResumo();
+            System.out.println("----------------------");
+        }
+    }
 }

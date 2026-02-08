@@ -35,4 +35,17 @@ public class Compra {
 
 		System.out.println("Total: R$ " + total);
 	}
+
+	public String formatarParaArquivo() {
+		String texto = "Compra:\n";
+
+		for (Produto p : produtos) {
+			texto += "- " + p.nome + " (R$ " + p.preco + ")\n";
+		}
+
+		texto += "Forma de pagamento: " + formaPagamento + "\n";
+		texto += "Total: R$ " + total + "\n";
+
+		return texto;
+	}
 }
