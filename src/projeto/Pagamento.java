@@ -4,58 +4,68 @@ import java.util.Scanner;
 
 public class Pagamento {
 
-    public boolean pagar(double total) {
-        Scanner entrada = new Scanner(System.in);
+	private String formaPagamento; 
 
-        System.out.println("\n=== PAGAMENTO ===");
-        System.out.println("1 - Dinheiro");
-        System.out.println("2 - Cartão");
-        System.out.println("3 - Pix");
-        System.out.println("0 - Cancelar pagamento");
-        System.out.print("Escolha a forma de pagamento: ");
+	public boolean pagar(double total) {
+		Scanner entrada = new Scanner(System.in);
+		entrada.useLocale(java.util.Locale.US);
 
-        int opcao = entrada.nextInt();
+		System.out.println("\n=== PAGAMENTO ===");
+		System.out.println("1 - Dinheiro");
+		System.out.println("2 - Cartão");
+		System.out.println("3 - Pix");
+		System.out.println("0 - Cancelar pagamento");
+		System.out.print("Escolha a forma de pagamento: ");
 
-        if (opcao == 0) {
-            System.out.println("Pagamento cancelado. Voltando ao menu...");
-            return false;
-        }
+		int opcao = entrada.nextInt();
 
-        System.out.print("Digite o valor pago: R$ ");
-        double pago = entrada.nextDouble();
+		if (opcao == 0) {
+			System.out.println("Pagamento cancelado. Voltando ao menu...");
+			return false;
+		}
 
-        if (pago < total) {
-            System.out.println("Valor insuficiente! Pagamento cancelado.");
-            return false;
-        }
+		System.out.print("Digite o valor pago: R$ ");
+		double pago = entrada.nextDouble();
 
-        System.out.print("Confirmar pagamento? (1 - Sim / 2 - Não): ");
-        int confirmar = entrada.nextInt();
+		if (pago < total) {
+			System.out.println("Valor insuficiente! Pagamento cancelado.");
+			return false;
+		}
 
-        if (confirmar != 1) {
-            System.out.println("Pagamento cancelado. Voltando ao menu...");
-            return false;
-        }
+		System.out.print("Confirmar pagamento? (1 - Sim / 2 - Não): ");
+		int confirmar = entrada.nextInt();
 
-        switch (opcao) {
-            case 1:
-                System.out.println("Pagamento em dinheiro realizado!");
-                System.out.println("Troco: R$ " + (pago - total));
-                break;
+		if (confirmar != 1) {
+			System.out.println("Pagamento cancelado. Voltando ao menu...");
+			return false;
+		}
 
-            case 2:
-                System.out.println("Pagamento no cartão aprovado!");
-                break;
+		switch (opcao) {
+		case 1:
+			formaPagamento = "Dinheiro";
+			System.out.println("Pagamento em dinheiro realizado!");
+			System.out.println("Troco: R$ " + (pago - total));
+			break;
 
-            case 3:
-                System.out.println("Pagamento via Pix realizado!");
-                break;
+		case 2:
+			formaPagamento = "Cartão";
+			System.out.println("Pagamento no cartão aprovado!");
+			break;
 
-            default:
-                System.out.println("Forma de pagamento inválida!");
-                return false;
-        }
+		case 3:
+			formaPagamento = "Pix";
+			System.out.println("Pagamento via Pix realizado!");
+			break;
 
-        return true;
-    }
+		default:
+			System.out.println("Forma de pagamento inválida!");
+			return false;
+		}
+
+		return true;
+	}
+
+	public String getFormaPagamento() {
+		return formaPagamento;
+	}
 }
