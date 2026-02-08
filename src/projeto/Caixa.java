@@ -60,16 +60,33 @@ public class Caixa {
 				carrinho.mostrarProdutos();
 
 				double total = carrinho.calcularTotal();
-				System.out.println("Total a pagar: R$ " + total);
+				System.out.println("Total da compra: R$ " + total);
+
+				// ===== DESCONTO =====
+				System.out.print("Deseja aplicar desconto? (1 - Sim / 2 - Não): ");
+				int opcaoDesconto = entrada.nextInt();
+
+				double totalFinal = total;
+
+				if (opcaoDesconto == 1) {
+					System.out.print("Digite o percentual de desconto (%): ");
+					double percentual = entrada.nextDouble();
+
+					double valorDesconto = total * (percentual / 100);
+					totalFinal = total - valorDesconto;
+
+					System.out.println("Desconto aplicado: R$ " + valorDesconto);
+				}
+
+				System.out.println("Total a pagar: R$ " + totalFinal);
 
 				Pagamento pagamento = new Pagamento();
 
-				// chama o pagamento e espera confirmação
-				boolean pagamentoConfirmado = pagamento.pagar(total);
+				boolean pagamentoConfirmado = pagamento.pagar(totalFinal);
 
 				if (pagamentoConfirmado) {
-					Compra compra = new Compra(carrinho.getProdutos(), total,
-							pagamento.getFormaPagamento());
+					Compra compra = new Compra(carrinho.getProdutos(), totalFinal, pagamento.getFormaPagamento());
+
 					historico.adicionarCompra(compra);
 					carrinho.limpar();
 					System.out.println("Compra finalizada com sucesso!");
