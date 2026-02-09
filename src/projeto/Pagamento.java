@@ -4,7 +4,8 @@ import java.util.Scanner;
 
 public class Pagamento {
 
-	private String formaPagamento; 
+	private String formaPagamento;
+	private int parcelas;
 
 	public boolean pagar(double total) {
 		Scanner entrada = new Scanner(System.in);
@@ -12,7 +13,7 @@ public class Pagamento {
 
 		System.out.println("\n=== PAGAMENTO ===");
 		System.out.println("1 - Dinheiro");
-		System.out.println("2 - Cartão");
+		System.out.println("2 - Cartão de Crédito");
 		System.out.println("3 - Pix");
 		System.out.println("0 - Cancelar pagamento");
 		System.out.print("Escolha a forma de pagamento: ");
@@ -20,36 +21,32 @@ public class Pagamento {
 		int opcao = entrada.nextInt();
 
 		if (opcao == 0) {
-			System.out.println("Pagamento cancelado. Voltando ao menu...");
-			return false;
-		}
-
-		System.out.print("Digite o valor pago: R$ ");
-		double pago = entrada.nextDouble();
-
-		if (pago < total) {
-			System.out.println("Valor insuficiente! Pagamento cancelado.");
-			return false;
-		}
-
-		System.out.print("Confirmar pagamento? (1 - Sim / 2 - Não): ");
-		int confirmar = entrada.nextInt();
-
-		if (confirmar != 1) {
-			System.out.println("Pagamento cancelado. Voltando ao menu...");
+			System.out.println("Pagamento cancelado.");
 			return false;
 		}
 
 		switch (opcao) {
 		case 1:
 			formaPagamento = "Dinheiro";
+			System.out.print("Digite o valor pago: R$ ");
+			double pago = entrada.nextDouble();
+
+			if (pago < total) {
+				System.out.println("Valor insuficiente!");
+				return false;
+			}
+
 			System.out.println("Pagamento em dinheiro realizado!");
 			System.out.println("Troco: R$ " + (pago - total));
 			break;
 
 		case 2:
-			formaPagamento = "Cartão";
-			System.out.println("Pagamento no cartão aprovado!");
+			formaPagamento = "Cartão de Crédito";
+			System.out.print("Quantas parcelas? ");
+			parcelas = entrada.nextInt();
+
+			System.out.println(parcelas + "x de R$ " + String.format("%.2f", total / parcelas));
+			System.out.println("Pagamento no crédito aprovado!");
 			break;
 
 		case 3:
@@ -58,7 +55,7 @@ public class Pagamento {
 			break;
 
 		default:
-			System.out.println("Forma de pagamento inválida!");
+			System.out.println("Opção inválida!");
 			return false;
 		}
 
@@ -67,5 +64,9 @@ public class Pagamento {
 
 	public String getFormaPagamento() {
 		return formaPagamento;
+	}
+
+	public int getParcelas() {
+		return parcelas;
 	}
 }

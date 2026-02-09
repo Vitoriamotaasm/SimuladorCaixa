@@ -5,3 +5,21 @@ Forma de pagamento: Pix
 Total: R$ 9.0
 
 ----------------------
+Compra Nº 1
+Data: 08/02/2026 21:41
+- Refrigerante (R$ 5.0)
+- Salgado (R$ 7.5)
+Pagamento: Cartão de Crédito
+Parcelas: 5x de R$ 2,50
+Total: R$ 12.5
+
+----------------------
+Compra Nº 1
+Data: 08/02/2026 21:46
+- Salgado (R$ 7.5)
+- Chocolate (R$ 4.0)
+Pagamento: Cartão de Crédito
+Parcelas: 5x de R$ 2,30
+Total: R$ 11.5
+
+----------------------
