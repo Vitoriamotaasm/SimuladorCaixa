@@ -23,3 +23,11 @@ Parcelas: 5x de R$ 2,30
 Total: R$ 11.5
 
 ----------------------
+Compra Nº 1
+Data: 08/02/2026 23:14
+- Refrigerante (R$ 5.0)
+- Chocolate (R$ 4.0)
+Pagamento: [Dinheiro: R$ 6,00, Cartão de Crédito: 0x de R$ Infinity]
+Total: R$ 9.0
+
+----------------------

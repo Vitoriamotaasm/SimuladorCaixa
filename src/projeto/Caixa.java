@@ -63,13 +63,15 @@ public class Caixa {
 				System.out.println("Total a pagar: R$ " + String.format("%.2f", totalFinal));
 
 				Pagamento pagamento = new Pagamento();
+				
+				boolean pagamentoConfirmado = pagamento.pagar(totalFinal);
 
-				if (pagamento.pagar(totalFinal)) {
-					Compra compra = new Compra(carrinho.getProdutos(), totalFinal, pagamento.getFormaPagamento());
-
-					if (pagamento.getFormaPagamento().equals("Cartão de Crédito")) {
-						compra.setParcelas(pagamento.getParcelas());
-					}
+				if (pagamentoConfirmado) {
+					Compra compra = new Compra(
+						carrinho.getProdutos(),
+						totalFinal,
+						pagamento.getFormasPagamento()
+					);
 
 					historico.adicionarCompra(compra);
 					carrinho.limpar();

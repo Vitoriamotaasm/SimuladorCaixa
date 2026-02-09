@@ -8,6 +8,7 @@ public class Compra {
 
 	private static int contador = 1;
 
+	private List<String> formasPagamento;
 	private int numeroCompra;
 	private List<Produto> produtos;
 	private double total;
@@ -16,11 +17,11 @@ public class Compra {
 	private double valorParcela;
 	private LocalDateTime data;
 
-	public Compra(List<Produto> produtos, double total, String formaPagamento) {
+	public Compra(List<Produto> produtos, double total, List<String> formasPagamento) {
 		this.numeroCompra = contador++;
 		this.produtos = produtos;
 		this.total = total;
-		this.formaPagamento = formaPagamento;
+		this.formasPagamento = formasPagamento;
 		this.data = LocalDateTime.now();
 	}
 
@@ -34,13 +35,13 @@ public class Compra {
 
 		System.out.println("\n=== COMPRA Nº " + numeroCompra + " ===");
 		System.out.println("Data: " + data.format(f));
-		System.out.println("Pagamento: " + formaPagamento);
+		System.out.println("Pagamento: " + formasPagamento);
 
 		for (Produto p : produtos) {
 			System.out.println("- " + p.nome + " (R$ " + p.preco + ")");
 		}
 
-		if (formaPagamento.equals("Cartão de Crédito")) {
+		if (formasPagamento.equals("Cartão de Crédito")) {
 			System.out.println("Parcelas: " + parcelas + "x de R$ " + String.format("%.2f", valorParcela));
 		}
 
@@ -56,9 +57,9 @@ public class Compra {
 			texto += "- " + p.nome + " (R$ " + p.preco + ")\n";
 		}
 
-		texto += "Pagamento: " + formaPagamento + "\n";
+		texto += "Pagamento: " + formasPagamento + "\n";
 
-		if (formaPagamento.equals("Cartão de Crédito")) {
+		if (formasPagamento.equals("Cartão de Crédito")) {
 			texto += "Parcelas: " + parcelas + "x de R$ " + String.format("%.2f", valorParcela) + "\n";
 		}
 
