@@ -12,71 +12,65 @@ public class Caixa {
 		Carrinho carrinho = new Carrinho();
 
 		while (true) {
-			System.out.println("\n=== CAIXA ===");
-			System.out.println("1 - Adicionar produto");
-			System.out.println("2 - Ver total");
-			System.out.println("3 - Pagar");
-			System.out.println("4 - Histórico");
-			System.out.println("5 - Sair");
-			System.out.print("Escolha: ");
 
-			int opcao = entrada.nextInt();
+			int opcao = MenuCaixa.menuPrincipal();
 
 			switch (opcao) {
 
 			case 1:
 				Catalogo.mostrarProdutos();
+				System.out.print("Escolha o produto: ");
 				int escolha = entrada.nextInt();
-				Produto p = Catalogo.escolherProduto(escolha);
-				if (p != null)
-					carrinho.adicionarProduto(p);
+
+				Produto produto = Catalogo.escolherProduto(escolha);
+
+				if (produto != null) {
+					carrinho.adicionarProduto(produto);
+					System.out.println(produto.nome + " adicionado!");
+				}
 				break;
 
 			case 2:
-				System.out.println("Total: R$ " + carrinho.calcularTotal());
+				System.out.println("Total da compra: R$ " + carrinho.calcularTotal());
 				break;
 
 			case 3:
-				if (carrinho.estaVazio())
+				if (carrinho.estaVazio()) {
+					System.out.println("Carrinho vazio!");
 					break;
-
-				carrinho.mostrarProdutos();
-				double total = carrinho.calcularTotal();
-
-				double totalFinal = total;
-
-				System.out.print("Deseja aplicar desconto? (1 - Sim / 2 - Não): ");
-				int opcaoDesconto = entrada.nextInt();
-
-				if (opcaoDesconto == 1) {
-					System.out.print("Informe o percentual de desconto (%): ");
-					double percentual = entrada.nextDouble();
-
-					double valorDesconto = total * (percentual / 100);
-					totalFinal = total - valorDesconto;
-
-					System.out.println("Desconto aplicado: R$ " + String.format("%.2f", valorDesconto));
-				} else {
-					System.out.println("Nenhum desconto aplicado.");
 				}
 
-				System.out.println("Total a pagar: R$ " + String.format("%.2f", totalFinal));
+				carrinho.mostrarProdutos();
+
+				double total = carrinho.calcularTotal();
+				double totalFinal = total;
+
+				if (MenuCaixa.desejaDesconto()) {
+					double percentual = MenuCaixa.solicitarDesconto();
+					double desconto = total * (percentual / 100);
+					totalFinal -= desconto;
+					System.out.println("Desconto aplicado: R$ " + desconto);
+				}
+
+				System.out.println("Total a pagar: R$ " + totalFinal);
 
 				Pagamento pagamento = new Pagamento();
-				
-				boolean pagamentoConfirmado = pagamento.pagar(totalFinal);
 
+				boolean pagamentoConfirmado = pagamento.pagar(totalFinal);
+				
 				if (pagamentoConfirmado) {
-					Compra compra = new Compra(
-						carrinho.getProdutos(),
-						totalFinal,
-						pagamento.getFormasPagamento()
-					);
+					Compra compra = new Compra
+							(carrinho.getProdutos(), 
+									totalFinal,
+									pagamento.getFormasPagamento()
+									);
 
 					historico.adicionarCompra(compra);
 					carrinho.limpar();
+					
 					System.out.println("Compra finalizada!");
 				}
+
 				break;
 
 			case 4:
@@ -84,9 +78,12 @@ public class Caixa {
 				break;
 
 			case 5:
-				System.out.println("Encerrado!");
+				System.out.println("Caixa encerrado. Obrigado!");
 				entrada.close();
 				return;
+
+			default:
+				System.out.println("Opção inválida!");
 			}
 		}
 	}

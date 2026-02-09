@@ -1,51 +1,65 @@
 package projeto;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Carrinho {
 
-	Produto[] itens = new Produto[10];
-	int quantidade = 0;
+    private List<Produto> produtos = new ArrayList<>();
 
-	void adicionarProduto(Produto produto) {
-		itens[quantidade] = produto;
-		quantidade++;
-	}
+    public void adicionarProduto(Produto produto) {
+        produtos.add(produto);
+    }
 
-	double calcularTotal() {
-		double total = 0;
-		for (int i = 0; i < quantidade; i++) {
-			total += itens[i].preco;
-		}
-		return total;
-	}
+    public boolean estaVazio() {
+        return produtos.isEmpty();
+    }
 
-	void limpar() {
-		quantidade = 0;
-	}
+    public double calcularTotal() {
+        double total = 0;
+        for (Produto p : produtos) {
+            total += p.preco;
+        }
+        return total;
+    }
 
-	boolean estaVazio() {
-		return quantidade == 0;
-	}
+    public void mostrarProdutos() {
+        if (produtos.isEmpty()) {
+            System.out.println("Carrinho vazio!");
+            return;
+        }
 
-	List<Produto> getProdutos() {
-		List<Produto> lista = new ArrayList<>();
+        System.out.println("\n=== ITENS NO CARRINHO ===");
 
-		for (int i = 0; i < quantidade; i++) {
-			lista.add(itens[i]);
-		}
+        Map<String, Integer> contador = new HashMap<>();
 
-		return lista;
-	}
-	
-	void mostrarProdutos() {
-		System.out.println("\n=== ITENS NO CARRINHO ===");
+        for (Produto p : produtos) {
+            contador.put(p.nome, contador.getOrDefault(p.nome, 0) + 1);
+        }
 
-		for (int i = 0; i < quantidade; i++) {
-			System.out.println("- " + itens[i].nome +
-				" (R$ " + itens[i].preco + ")");
-		}
-	}
+        for (String nome : contador.keySet()) {
+            int qtd = contador.get(nome);
+            double preco = buscarPreco(nome);
+            System.out.println("- " + nome + " x" + qtd + " (R$ " + preco + " cada)");
+        }
+    }
+
+    private double buscarPreco(String nome) {
+        for (Produto p : produtos) {
+            if (p.nome.equals(nome)) {
+                return p.preco;
+            }
+        }
+        return 0;
+    }
+
+    public List<Produto> getProdutos() {
+        return produtos;
+    }
+
+    public void limpar() {
+        produtos.clear();
+    }
 }
-

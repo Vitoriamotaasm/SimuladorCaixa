@@ -31,3 +31,15 @@ Pagamento: [Dinheiro: R$ 6,00, Cartão de Crédito: 0x de R$ Infinity]
 Total: R$ 9.0
 
 ----------------------
+Compra Nº 1
+Data: 09/02/2026 11:06
+Produtos:
+- Refrigerante (R$ 5.0)
+- Salgado (R$ 7.5)
+- Chocolate (R$ 4.0)
+- Salgado (R$ 7.5)
+Formas de pagamento:
+- Dinheiro: R$ 24,00
+Total: R$ 24,00
+
+----------------------

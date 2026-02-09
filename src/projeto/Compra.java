@@ -8,13 +8,10 @@ public class Compra {
 
 	private static int contador = 1;
 
-	private List<String> formasPagamento;
 	private int numeroCompra;
 	private List<Produto> produtos;
 	private double total;
-	private String formaPagamento;
-	private int parcelas;
-	private double valorParcela;
+	private List<String> formasPagamento;
 	private LocalDateTime data;
 
 	public Compra(List<Produto> produtos, double total, List<String> formasPagamento) {
@@ -25,45 +22,41 @@ public class Compra {
 		this.data = LocalDateTime.now();
 	}
 
-	public void setParcelas(int parcelas) {
-		this.parcelas = parcelas;
-		this.valorParcela = total / parcelas;
-	}
-
 	public void mostrarResumo() {
-		DateTimeFormatter f = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+		DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
 		System.out.println("\n=== COMPRA Nº " + numeroCompra + " ===");
-		System.out.println("Data: " + data.format(f));
-		System.out.println("Pagamento: " + formasPagamento);
+		System.out.println("Data: " + data.format(formato));
 
+		System.out.println("\nProdutos:");
 		for (Produto p : produtos) {
 			System.out.println("- " + p.nome + " (R$ " + p.preco + ")");
 		}
 
-		if (formasPagamento.equals("Cartão de Crédito")) {
-			System.out.println("Parcelas: " + parcelas + "x de R$ " + String.format("%.2f", valorParcela));
+		System.out.println("\nFormas de pagamento:");
+		for (String f : formasPagamento) {
+			System.out.println("- " + f);
 		}
 
-		System.out.println("Total: R$ " + total);
+		System.out.println("\nTotal pago: R$ " + String.format("%.2f", total));
 	}
 
 	public String formatarParaArquivo() {
-		DateTimeFormatter f = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 		String texto = "Compra Nº " + numeroCompra + "\n";
-		texto += "Data: " + data.format(f) + "\n";
+		texto += "Data: " + data.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) + "\n";
 
+		texto += "Produtos:\n";
 		for (Produto p : produtos) {
 			texto += "- " + p.nome + " (R$ " + p.preco + ")\n";
 		}
 
-		texto += "Pagamento: " + formasPagamento + "\n";
-
-		if (formasPagamento.equals("Cartão de Crédito")) {
-			texto += "Parcelas: " + parcelas + "x de R$ " + String.format("%.2f", valorParcela) + "\n";
+		texto += "Formas de pagamento:\n";
+		for (String f : formasPagamento) {
+			texto += "- " + f + "\n";
 		}
 
-		texto += "Total: R$ " + total + "\n";
+		texto += "Total: R$ " + String.format("%.2f", total) + "\n";
+
 		return texto;
 	}
 }
