@@ -1,6 +1,13 @@
-package projeto;
+package app;
 
 import java.util.Scanner;
+
+import model.Compra;
+import model.Produto;
+import repository.HistoricoCompras;
+import service.Carrinho;
+import service.Catalogo;
+import service.Pagamento;
 
 public class Caixa {
 
@@ -10,6 +17,7 @@ public class Caixa {
 
 		Scanner entrada = new Scanner(System.in);
 		Carrinho carrinho = new Carrinho();
+		Catalogo catalogo = new Catalogo();
 
 		while (true) {
 
@@ -18,15 +26,15 @@ public class Caixa {
 			switch (opcao) {
 
 			case 1:
-				Catalogo.mostrarProdutos();
+				catalogo.mostrarProdutos();
 				System.out.print("Escolha o produto: ");
 				int escolha = entrada.nextInt();
 
-				Produto produto = Catalogo.escolherProduto(escolha);
+				Produto produto = catalogo.escolherProduto(escolha);
 
 				if (produto != null) {
 					carrinho.adicionarProduto(produto);
-					System.out.println(produto.nome + " adicionado!");
+					System.out.println(produto.getNome() + " adicionado!");
 				}
 				break;
 
@@ -57,17 +65,13 @@ public class Caixa {
 				Pagamento pagamento = new Pagamento();
 
 				boolean pagamentoConfirmado = pagamento.pagar(totalFinal);
-				
+
 				if (pagamentoConfirmado) {
-					Compra compra = new Compra
-							(carrinho.getProdutos(), 
-									totalFinal,
-									pagamento.getFormasPagamento()
-									);
+					Compra compra = new Compra(carrinho.getProdutos(), totalFinal, pagamento.getFormasPagamento());
 
 					historico.adicionarCompra(compra);
 					carrinho.limpar();
-					
+
 					System.out.println("Compra finalizada!");
 				}
 

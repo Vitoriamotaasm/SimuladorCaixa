@@ -1,4 +1,4 @@
-package projeto;
+package model;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -42,21 +42,22 @@ public class Compra {
 	}
 
 	public String formatarParaArquivo() {
-		String texto = "Compra Nº " + numeroCompra + "\n";
-		texto += "Data: " + data.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) + "\n";
+		String texto = "=== COMPRA Nº " + numeroCompra + " ===\n";
+		texto += "Data: " + data.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) + "\n\n";
 
 		texto += "Produtos:\n";
 		for (Produto p : produtos) {
-			texto += "- " + p.nome + " (R$ " + p.preco + ")\n";
+			texto += "- " + p.getNome() + " (R$ " + String.format("%.2f", p.getPreco()) + ")\n";
 		}
 
-		texto += "Formas de pagamento:\n";
-		for (String f : formasPagamento) {
-			texto += "- " + f + "\n";
+		texto += "\nFormas de pagamento:\n";
+		for (String fp : formasPagamento) {
+			texto += "- " + fp + "\n";
 		}
 
-		texto += "Total: R$ " + String.format("%.2f", total) + "\n";
+		texto += "\nTotal pago: R$ " + String.format("%.2f", total) + "\n";
 
 		return texto;
 	}
+
 }
