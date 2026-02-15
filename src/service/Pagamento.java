@@ -7,6 +7,17 @@ import java.util.Scanner;
 public class Pagamento {
 
 	private List<String> formasPagamento = new ArrayList<>();
+	
+	private int parcelas;
+	private double valorParcela;
+	
+	public int getParcelas() {
+		return parcelas;
+	}
+	
+	public double getValorParcela() {
+		return valorParcela;
+	}
 
 	public boolean pagar(double total) {
 		Scanner entrada = new Scanner(System.in);

@@ -2,96 +2,163 @@ package model;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Compra {
 
-	private static int contador = 1;
+    private static int contador = 1;
 
-	private int numeroCompra;
-	private List<Produto> produtos;
-	private double total;
-	private List<String> formasPagamento;
-	private LocalDateTime data;
+    private int numeroCompra;
+    private List<Produto> produtos;
+    private double total;
+    private List<String> formasPagamento;
+    private LocalDateTime data;
 
-	public Compra(List<Produto> produtos, double total, List<String> formasPagamento) {
-		this.numeroCompra = contador++;
-		this.produtos = produtos;
-		this.total = total;
-		this.formasPagamento = formasPagamento;
-		this.data = LocalDateTime.now();
-	}
+    private int parcelas;
+    private double valorParcela;
 
-	public void mostrarResumo() {
-		DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+    public Compra(List<Produto> produtos,
+                  double total,
+                  List<String> formasPagamento,
+                  int parcelas,
+                  double valorParcela) {
 
-		System.out.println("\n=== COMPRA Nº " + numeroCompra + " ===");
-		System.out.println("Data: " + data.format(formato));
+        this.numeroCompra = contador++;
+        this.produtos = produtos != null ? produtos : new ArrayList<>();
+        this.total = total;
+        this.formasPagamento = formasPagamento != null ? formasPagamento : new ArrayList<>();
+        this.parcelas = parcelas;
+        this.valorParcela = valorParcela;
+        this.data = LocalDateTime.now();
+    }
 
-		System.out.println("\nProdutos:");
-		for (Produto p : produtos) {
-			System.out.println("- " + p.nome + " (R$ " + p.preco + ")");
-		}
+    public void mostrarResumo() {
 
-		System.out.println("\nFormas de pagamento:");
-		for (String f : formasPagamento) {
-			System.out.println("- " + f);
-		}
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
-		System.out.println("\nTotal pago: R$ " + String.format("%.2f", total));
-	}
+        System.out.println("\n=== COMPRA Nº " + numeroCompra + " ===");
+        System.out.println("Data: " + data.format(formato));
 
-	public String formatarParaArquivo() {
-		String texto = "=== COMPRA Nº " + numeroCompra + " ===\n";
-		texto += "Data: " + data.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) + "\n\n";
+        System.out.println("\nProdutos:");
+        for (Produto p : produtos) {
+            System.out.println("- " + p.getNome()
+                    + " (R$ " + String.format("%.2f", p.getPreco()) + ")");
+        }
 
-		texto += "Produtos:\n";
-		for (Produto p : produtos) {
-			texto += "- " + p.getNome() + " (R$ " + String.format("%.2f", p.getPreco()) + ")\n";
-		}
+        System.out.println("\nFormas de pagamento:");
+        for (String f : formasPagamento) {
+            System.out.println("- " + f);
+        }
 
-		texto += "\nFormas de pagamento:\n";
-		for (String fp : formasPagamento) {
-			texto += "- " + fp + "\n";
-		}
+        if (parcelas > 1) {
+            System.out.println("\nParcelamento: "
+                    + parcelas + "x de R$ "
+                    + String.format("%.2f", valorParcela));
+        }
 
-		texto += "\nTotal pago: R$ " + String.format("%.2f", total) + "\n";
+        System.out.println("\nTotal pago: R$ "
+                + String.format("%.2f", total));
+    }
 
-		return texto;
-	}
-	
-	public static Compra criarAPartirDoArquivo(String texto) {
+    public String formatarParaArquivo() {
 
-	    List<Produto> produtos = new java.util.ArrayList<>();
-	    List<String> formasPagamento = new java.util.ArrayList<>();
-	    double total = 0;
+        StringBuilder texto = new StringBuilder();
 
-	    String[] linhas = texto.split("\n");
+        texto.append("=== COMPRA Nº ").append(numeroCompra).append(" ===\n");
+        texto.append("Data: ")
+                .append(data.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")))
+                .append("\n\n");
 
-	    for (String linha : linhas) {
+        texto.append("Produtos:\n");
+        for (Produto p : produtos) {
+            texto.append("- ")
+                    .append(p.getNome())
+                    .append(" (R$ ")
+                    .append(String.format("%.2f", p.getPreco()))
+                    .append(")\n");
+        }
 
-	        linha = linha.trim();
+        texto.append("\nFormas de pagamento:\n");
+        for (String fp : formasPagamento) {
+            texto.append("- ").append(fp).append("\n");
+        }
 
-	        if (linha.startsWith("Total pago:")) {
-	            String valor = linha
-	                    .replace("Total pago: R$", "")
-	                    .replace(",", ".")
-	                    .trim();
+        if (parcelas > 1) {
+            texto.append("\nParcelamento: ")
+                    .append(parcelas)
+                    .append("x de R$ ")
+                    .append(String.format("%.2f", valorParcela))
+                    .append("\n");
+        }
 
-	            total = Double.parseDouble(valor);
-	        }
+        texto.append("\nTotal pago: R$ ")
+                .append(String.format("%.2f", total))
+                .append("\n");
 
-	        if (linha.startsWith("- ")) {
+        return texto.toString();
+    }
 
-	        
-	            if (texto.contains("Formas de pagamento:")) {
-	                formasPagamento.add(linha.replace("- ", "").trim());
-	            }
-	        }
-	    }
+    public static Compra criarAPartirDoArquivo(String texto) {
 
-	    return new Compra(produtos, total, formasPagamento);
-	}
+        List<Produto> produtos = new ArrayList<>();
+        List<String> formasPagamento = new ArrayList<>();
+        double total = 0;
+        int parcelas = 1;
+        double valorParcela = 0;
 
+        String[] linhas = texto.split("\n");
 
+        for (String linha : linhas) {
+
+            linha = linha.trim();
+
+            if (linha.startsWith("- ") && linha.contains("(R$")) {
+
+                // Produto
+                String nome = linha.substring(2, linha.indexOf("(R$")).trim();
+                String precoStr = linha.substring(
+                        linha.indexOf("(R$") + 4,
+                        linha.indexOf(")")
+                ).replace(",", ".").trim();
+
+                double preco = Double.parseDouble(precoStr);
+
+                produtos.add(new Produto(nome, preco));
+            }
+
+            if (linha.startsWith("Total pago:")) {
+
+                String valor = linha
+                        .replace("Total pago: R$", "")
+                        .replace(",", ".")
+                        .trim();
+
+                total = Double.parseDouble(valor);
+            }
+
+            if (linha.startsWith("Parcelamento:")) {
+
+                String info = linha.replace("Parcelamento:", "").trim();
+                String[] partes = info.split("x de R\\$");
+
+                parcelas = Integer.parseInt(partes[0].trim());
+                valorParcela = Double.parseDouble(partes[1].trim());
+            }
+
+            if (linha.startsWith("- ") && !linha.contains("(R$")) {
+                formasPagamento.add(linha.replace("- ", "").trim());
+            }
+        }
+
+        return new Compra(produtos, total, formasPagamento, parcelas, valorParcela);
+    }
+
+    public double getTotal() {
+        return total;
+    }
+
+    public List<String> getFormasPagamento() {
+        return formasPagamento;
+    }
 }

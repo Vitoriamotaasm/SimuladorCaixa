@@ -67,7 +67,12 @@ public class Caixa {
 				boolean pagamentoConfirmado = pagamento.pagar(totalFinal);
 
 				if (pagamentoConfirmado) {
-					Compra compra = new Compra(carrinho.getProdutos(), totalFinal, pagamento.getFormasPagamento());
+					Compra compra = new Compra(carrinho.getProdutos(),
+							totalFinal,
+							pagamento.getFormasPagamento(),
+							pagamento.getParcelas(),
+							pagamento.getValorParcela()
+							);
 
 					historico.adicionarCompra(compra);
 					carrinho.limpar();

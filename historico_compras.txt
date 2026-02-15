@@ -43,3 +43,16 @@ Formas de pagamento:
 Total: R$ 24,00
 
 ----------------------
+=== COMPRA Nº 6 ===
+Data: 15/02/2026 11:28
+
+Produtos:
+- Arroz (R$ 10,00)
+- Feijão (R$ 8,00)
+
+Formas de pagamento:
+- Cartão de Crédito: 3x de R$ 6,00
+
+Total pago: R$ 18,00
+
+----------------------
