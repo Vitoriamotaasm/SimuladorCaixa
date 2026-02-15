@@ -59,5 +59,39 @@ public class Compra {
 
 		return texto;
 	}
+	
+	public static Compra criarAPartirDoArquivo(String texto) {
+
+	    List<Produto> produtos = new java.util.ArrayList<>();
+	    List<String> formasPagamento = new java.util.ArrayList<>();
+	    double total = 0;
+
+	    String[] linhas = texto.split("\n");
+
+	    for (String linha : linhas) {
+
+	        linha = linha.trim();
+
+	        if (linha.startsWith("Total pago:")) {
+	            String valor = linha
+	                    .replace("Total pago: R$", "")
+	                    .replace(",", ".")
+	                    .trim();
+
+	            total = Double.parseDouble(valor);
+	        }
+
+	        if (linha.startsWith("- ")) {
+
+	        
+	            if (texto.contains("Formas de pagamento:")) {
+	                formasPagamento.add(linha.replace("- ", "").trim());
+	            }
+	        }
+	    }
+
+	    return new Compra(produtos, total, formasPagamento);
+	}
+
 
 }
